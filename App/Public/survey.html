@@ -1,0 +1,147 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        .matchHolder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h3>Friendfinder</h3>
+        <p>Time Remaining: <span id="timer-area">30</span></p>
+        <form><label for="name-input">Name:</label><input type="text" id="name-input"></form>
+        <form><label for="image-input">image:</label><input type="text" id="image-input"></form>
+        <form>
+            <div class='questionOne'>
+                <span>question 1</span>
+                <input type="radio" name="question1" value="1"> 1
+                <input type="radio" name="question1" value="2"> 2
+                <input type="radio" name="question1" value="3"> 3
+                <input type="radio" name="question1" value="4"> 4
+                <input type="radio" name="question1" value="5"> 5
+            </div>
+        </form>
+        <form>
+            <div class='questionTwo'>
+                <span>question 2</span>
+                <input type="radio" name="question2" value="1"> 1
+                <input type="radio" name="question2" value="2"> 2
+                <input type="radio" name="question2" value="3"> 3
+                <input type="radio" name="question2" value="4"> 4
+                <input type="radio" name="question2" value="5"> 5
+            </div>
+        </form>
+        <form>
+            <div class='questionThree'>
+                <span>question 3</span>
+                <input type="radio" name="question3" value="1"> 1
+                <input type="radio" name="question3" value="2"> 2
+                <input type="radio" name="question3" value="3"> 3
+                <input type="radio" name="question3" value="4"> 4
+                <input type="radio" name="question3" value="5"> 5
+            </div>
+        </form>
+        <form>
+            <div class='questionFour'>
+                <span>question 4</span>
+                <input type="radio" name="question4" value="1"> 1
+                <input type="radio" name="question4" value="2"> 2
+                <input type="radio" name="question4" value="3"> 3
+                <input type="radio" name="question4" value="4"> 4
+                <input type="radio" name="question4" value="5"> 5
+            </div>
+        </form>
+        <form>
+            <div class='questionFive'>
+                <span>question 5</span>
+                <input type="radio" name="question5" value="1"> 1
+                <input type="radio" name="question5" value="2"> 2
+                <input type="radio" name="question5" value="3"> 3
+                <input type="radio" name="question5" value="4"> 4
+                <input type="radio" name="question5" value="5"> 5
+            </div>
+        </form>
+
+        <button id="submit-button">Submit</button>
+
+
+
+    </div>
+    <div class="matchHolder hide">
+        <h4>Your Match:</h4>
+        <p>Name: <span id="matchName"></span></p>
+        <img id="matchImage" src="#">
+    </div>
+    <script>
+        var timerValue = 30;
+        var surveyTimer = setInterval(timer, 1000);
+
+        function updateTimerUI(timerInfo) {
+            $('#timer-area').text(timerInfo);
+        }
+
+        function timer() {
+            timerValue--;
+            if (timerValue < 0) {
+                clearInterval(surveyTimer);
+                //If this happens that means the user did not press submit
+                //in the allotted time and we need to manually submit our form
+            } else {
+                updateTimerUI(timerValue)
+            }
+        }
+
+        //Write a click handler for submit button
+        $('#submit-button').on('click', function() {
+            var dataName = $('#name-input').val();
+            var dataImage = $('#image-input').val();
+            var userData = {
+                name: dataName,
+                photo: dataImage,
+                scores: getCheckedData()
+            }
+            console.error(userData);
+            var currentURL = window.location.origin;
+            $.ajax({
+                url: currentURL + '/survey',
+                method: 'POST',
+                data: userData
+
+            }).done(function(res, err) {
+                console.log('LOOK HEERE', res)
+                    //setting the text
+                $('#matchName').text(res.name);
+                //setting the src attribute
+                $('#matchImage').attr('src', res.photo);
+                //Removes the hide and makes the element visible
+                $('.matchHolder').removeClass('hide');
+
+            })
+        });
+
+
+
+        //Write a function that reads our DOM for our selected answers which will be used in the above
+        function getCheckedData() {
+            var questionOneCheckedData = $('input[name=question1]:checked').val();
+            var questionTwoCheckedData = $('input[name=question2]:checked').val();
+            var questionThreeCheckedData = $('input[name=question3]:checked').val();
+            var questionFourCheckedData = $('input[name=question4]:checked').val();
+            var questionFiveCheckedData = $('input[name=question5]:checked').val();
+
+            return [questionOneCheckedData, questionTwoCheckedData, questionThreeCheckedData, questionFourCheckedData, questionFiveCheckedData];
+        }
+    </script>
+</body>
+
+</html>
