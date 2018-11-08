@@ -1,6 +1,6 @@
 var friends = [{
         "name": "Ahmed",
-        "photo": "https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/6/005/064/1bd/3435aa3.jpg",
+        "photo": "http://www.crystal-designed-art.com/Images/Swarovski_crystal_portrait_Chaplin2.gif",
         "scores": [
             5,
             1,
@@ -11,7 +11,7 @@ var friends = [{
     },
     {
         "name": "Bob",
-        "photo": "https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/6/005/064/1bd/3435aa3.jpg",
+        "photo": "http://www.crystal-designed-art.com/Images/Swarovski_crystal_portrait_Chaplin2.gif",
         "scores": [
             1,
             1,
